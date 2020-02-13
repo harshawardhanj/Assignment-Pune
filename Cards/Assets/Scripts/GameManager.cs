@@ -39,7 +39,7 @@ public class GameManager : MonoBehaviour {
 		for (int i = 0; i < cards.Length; i++)
 		{
 			// Generate 13 cards wih random suits and numbers
-			int num = Random.Range(0, 51) + 1;
+			int num = Random.Range(0, 53) + 1;
 				int count=0;
 				for (int k = 0; k < i; k++)
 				{
@@ -68,7 +68,7 @@ public class GameManager : MonoBehaviour {
 		{
 			string text = "";
 			int temp = cards[i] % 13 +1;
-		
+
 			// Updating card suit numbers 
 			if (temp == 1)
 				text = "A";
@@ -78,8 +78,10 @@ public class GameManager : MonoBehaviour {
 				text = "Q";
 			else if (temp == 13)
 				text = "K";
-			else 
-				text = temp+"";
+			else if (temp == 53)
+				text = "JOKER";
+			else
+				text = temp + "";
 		
 			// updating numbers on cards 
 			PlayingCards[i].transform.GetChild(0).transform.GetComponent<TextMeshProUGUI>().text = text;
