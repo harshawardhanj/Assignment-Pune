@@ -11,34 +11,53 @@ public class GameManager : MonoBehaviour {
 	public Sprite CardHeart;
 
 	private int[] cards;
+	private int cardSets=1;
 
 	public GameObject []PlayingCards;
+	public GameObject SelectedSetText;
+	public GameObject statusText;
 	// Use this for initialization
 	void Start () {
 		cards = new int[13];
+		cardSets = 1;
 		refreshCards();
+
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
 		
 	}
 	public void refreshCards()
 	{
-		// 0- 12 - > Heart
-		//13- 25 -> Diamond
-		// 26- 38 ->Club
-		//39- 51 ->  Spade
+		// 1- 13 - > Heart
+		//14- 26 -> Diamond
+		// 27- 39 ->Club
+		//40- 52 ->  Spade
+		statusText.GetComponent<TextMeshProUGUI>().text = "STATUS : UNSORTED";
+
 		for (int i = 0; i < cards.Length; i++)
 		{
-			cards[i] = Random.Range(0, 51)+1;
-			Debug.Log(i+"====> "+cards[i]);
+			// Generate 13 cards wih random suits and numbers
+			int num = Random.Range(0, 51) + 1;
+				int count=0;
+				for (int k = 0; k < i; k++)
+				{
+					if (num == cards[k])
+						++count;				
+				}
+ 
+	// Duplicate of card depend on sets 		
+			if (count < cardSets)
+				cards[i] = num;
+			else
+				--i;
 		}
 
 		UpdateCards();	
 	}
 
-	// updating cards suit and numbers 
+	// updating cards suit and numbers in gameplay
 		public void UpdateCards()
 	{
 		// 1- 13 - > Heart
@@ -49,6 +68,8 @@ public class GameManager : MonoBehaviour {
 		{
 			string text = "";
 			int temp = cards[i] % 13 +1;
+		
+			// Updating card suit numbers 
 			if (temp == 1)
 				text = "A";
 			else if (temp == 11)
@@ -59,7 +80,8 @@ public class GameManager : MonoBehaviour {
 				text = "K";
 			else 
 				text = temp+"";
-
+		
+			// updating numbers on cards 
 			PlayingCards[i].transform.GetChild(0).transform.GetComponent<TextMeshProUGUI>().text = text;
 			PlayingCards[i].transform.GetChild(1).transform.GetComponent<TextMeshProUGUI>().text = text;
 
@@ -72,12 +94,12 @@ public class GameManager : MonoBehaviour {
 				PlayingCards[i].GetComponentInChildren<UnityEngine.UI.Image>().sprite = CardDiamond;
 			}
 			else if (cards[i] >= 27 && cards[i] <= 39)
-			{// Club card
-				PlayingCards[i].GetComponentInChildren<UnityEngine.UI.Image>().sprite = CardClubs;
+			{// Spade card
+				PlayingCards[i].GetComponentInChildren<UnityEngine.UI.Image>().sprite = CardSpades;
 			}
 			else if (cards[i] >= 40 && cards[i] <= 52)
-			{// Spade Card
-				PlayingCards[i].GetComponentInChildren<UnityEngine.UI.Image>().sprite = CardSpades;
+			{// Club Card
+				PlayingCards[i].GetComponentInChildren<UnityEngine.UI.Image>().sprite = CardClubs;
 			}
 		}
 
@@ -101,6 +123,39 @@ public class GameManager : MonoBehaviour {
 		}
 
 
+		statusText.GetComponent<TextMeshProUGUI>().text = "STATUS : SORTED";
+
 		UpdateCards();
 	}
+
+	// Update card set to 1 when clicked on set 1 button
+	public void Set1()
+	{
+		cardSets = 1;
+		SelectedSetText.GetComponent<TextMeshProUGUI>().text = "SET: 1";
+		refreshCards();
+	}
+	// Upading card set to 2 when clicked on set 2 button
+	public void Set2()
+	{
+		cardSets = 2;
+		SelectedSetText.GetComponent<TextMeshProUGUI>().text = "SET: 2";
+		refreshCards();
+	}
+	// Updaing on card set to 3 when clicked on set 3 button
+	public void Set3()
+	{
+		cardSets = 3;
+		SelectedSetText.GetComponent<TextMeshProUGUI>().text = "SET: 3";
+		refreshCards();
+	}
+	// Updaing on card set to 4 when clicked on set 4 button
+	public void Set4()
+	{
+		cardSets = 4;
+		SelectedSetText.GetComponent<TextMeshProUGUI>().text = "SET: 4";
+		refreshCards();
+	}
+
+
 }
